@@ -12,6 +12,7 @@ public class DetailActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        // comment
         super.onCreate(savedInstanceState);
         String title = getIntent().getExtras().getString("title");
         setContentView(R.layout.activity_detail);
