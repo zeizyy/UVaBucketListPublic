@@ -41,18 +41,25 @@ public class MainActivity extends AppCompatActivity {
         BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
         ListView listView = (ListView) findViewById(R.id.listView);
         ArrayList<String> lines = new ArrayList<>();
+        ArrayList<Boolean> checked = new ArrayList<>();
         try {
-            String line = reader.readLine();
-            while (line != null) {
-                lines.add(line);
-                line = reader.readLine();
+            String line;
+            String [] split;
+            while ((line = reader.readLine())  != null) {
+                split = line.split(",");
+                lines.add(split[0]);
+                if(split[1].equals("1")){
+                    checked.add(true);
+                } else {
+                    checked.add(false);
+                }
             }
 
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        ListAdapter customAdapter = new CustomAdapter(this, R.id.listView, R.id.textView1, lines);
+        ListAdapter customAdapter = new CustomAdapter(this, R.id.listView, R.id.textView1, lines, checked);
         listView.setAdapter(customAdapter);
 
     }

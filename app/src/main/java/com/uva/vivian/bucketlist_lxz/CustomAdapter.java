@@ -9,6 +9,7 @@ import android.widget.CheckBox;
 import android.view.LayoutInflater;
 import android.widget.TextView;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -31,7 +32,7 @@ public class CustomAdapter extends ArrayAdapter<String> {
 
     HashMap<String, Integer> mIdMap = new HashMap<String, Integer>();
     ArrayList<String> itemList = new ArrayList<>();
-
+    ArrayList<Boolean> checked = new ArrayList<>();
     /**
      * Constructor
      *
@@ -41,7 +42,7 @@ public class CustomAdapter extends ArrayAdapter<String> {
      * @param textViewResourceId The id of the TextView within the layout resource to be populated
      * @param objects            The objects to represent in the ListView.
      */
-    public CustomAdapter(Context context, int resource, int textViewResourceId, List<String> objects) {
+    public CustomAdapter(Context context, int resource, int textViewResourceId, List<String> objects, ArrayList<Boolean> checked) {
         super(context, resource, textViewResourceId, objects);
         inflater = (LayoutInflater) context.
                 getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -50,6 +51,7 @@ public class CustomAdapter extends ArrayAdapter<String> {
             mIdMap.put(objects.get(i), i);
             itemList.add(objects.get(i));
         }
+        this.checked = checked;
     }
 
     @Override
@@ -78,7 +80,7 @@ public class CustomAdapter extends ArrayAdapter<String> {
 
         ViewHolder holder = (ViewHolder) rowView.getTag();
         holder.textView.setText(itemList.get(position));
-        holder.checkBox.setChecked(false); // hard coded
+        holder.checkBox.setChecked(checked.get(position)); // hard coded
 
         return rowView;
     }
