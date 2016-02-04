@@ -1,23 +1,21 @@
 package com.uva.vivian.bucketlist_lxz;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.CheckBox;
-import android.widget.LinearLayout;
-import android.widget.TextView;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -38,52 +36,25 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        final TextView textView = (TextView) findViewById(R.id.textView);
-        TextView.OnClickListener onClickListener = new TextView.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-//                Context context = getApplicationContext();
-//                CharSequence text = "Hello toast!";
-//                int duration = Toast.LENGTH_SHORT;
-//
-//                Toast toast = Toast.makeText(context, text, duration);
-//                toast.show();
-                Intent intent = new Intent(v.getContext(), DetailActivity.class);
-                intent.putExtra("title", ((TextView) v).getText());
-                startActivity(intent);
-            }
-        };
-        textView.setOnClickListener(onClickListener);
-
-        final TextView textView2 = (TextView) findViewById(R.id.textView2);
-        textView2.setOnClickListener(onClickListener);
-
         // read csv file to dynamically generate the list
         InputStream inputStream = getResources().openRawResource(R.raw.uva111things);
         BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
-        String line = null;
-        LinearLayout linearLayout = (LinearLayout) findViewById(R.id.listLinearLayout);
+        ListView listView = (ListView) findViewById(R.id.listView);
+        ArrayList<String> lines = new ArrayList<>();
         try {
-            line = reader.readLine();
+            String line = reader.readLine();
             while (line != null) {
-                CheckBox checkBox = new CheckBox(this);
-
-                TextView tv = new TextView(this);
-                tv.setText(line);
-                tv.setOnClickListener(onClickListener);
-                tv.setGravity(Gravity.CENTER_VERTICAL);
-
-                LinearLayout oneRow = new LinearLayout(this);
-                oneRow.addView(checkBox);
-                oneRow.addView(tv);
-
-                linearLayout.addView(oneRow);
+                lines.add(line);
                 line = reader.readLine();
             }
 
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        ListAdapter customAdapter = new CustomAdapter(this, R.id.listView, R.id.textView1, lines);
+        listView.setAdapter(customAdapter);
+
     }
 
 
