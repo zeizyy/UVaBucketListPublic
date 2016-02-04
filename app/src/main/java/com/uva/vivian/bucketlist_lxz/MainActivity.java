@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         final TextView textView = (TextView) findViewById(R.id.textView);
-        View.OnClickListener onClickListener = new View.OnClickListener() {
+        TextView.OnClickListener onClickListener = new TextView.OnClickListener() {
             @Override
             public void onClick(View v) {
 //                Context context = getApplicationContext();
@@ -44,30 +44,15 @@ public class MainActivity extends AppCompatActivity {
 //                Toast toast = Toast.makeText(context, text, duration);
 //                toast.show();
                 Intent intent = new Intent(v.getContext(), DetailActivity.class);
-                intent.putExtra("title",textView.getText());
+                intent.putExtra("title", ((TextView) v).getText());
                 startActivity(intent);
             }
         };
         textView.setOnClickListener(onClickListener);
 
         final TextView textView2 = (TextView) findViewById(R.id.textView2);
-        View.OnClickListener onClickListener2 = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-//                Context context = getApplicationContext();
-//                CharSequence text = "Hello toast!";
-//                int duration = Toast.LENGTH_SHORT;
-//
-//                Toast toast = Toast.makeText(context, text, duration);
-//                toast.show();
-                Intent intent = new Intent(v.getContext(), DetailActivity.class);
-                intent.putExtra("title",textView2.getText());
-                startActivity(intent);
-            }
-        };
-        textView2.setOnClickListener(onClickListener2);
+        textView2.setOnClickListener(onClickListener);
     }
-
 
 
     @Override
