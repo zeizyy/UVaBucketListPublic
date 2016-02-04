@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
             String line;
             String[] split;
             while ((line = reader.readLine()) != null) {
-                split = line.split(",");
+                split = line.split("\t");
                 lines.add(split[0]);
                 if (split[1].equals("1")) {
                     checked.add(true);
@@ -103,8 +103,16 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+
     public void onCheckboxClicked(View view) {
-        
+//        InputStream inputStream = getResources().openRawResource(R.raw.uva111things);
+//        BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+        Context context = getApplicationContext();
+        CharSequence text =  view.getId()+"";;
+        int duration = Toast.LENGTH_SHORT;
+
+        Toast toast = Toast.makeText(context, text, duration);
+        toast.show();
     }
 
 
