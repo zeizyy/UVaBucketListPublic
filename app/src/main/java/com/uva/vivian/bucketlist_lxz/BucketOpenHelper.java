@@ -3,17 +3,25 @@ package com.uva.vivian.bucketlist_lxz;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.ResourceBundle;
 
 /**
  * Created by ian_zheng on 2/4/16.
  */
 public class BucketOpenHelper extends SQLiteOpenHelper {
+    private final Context fContext;
     private static final int DATABASE_VERSION = 1;
     public static final String KEY_THING = "thing";
     public static final String KEY_FLAG = "flag";
@@ -26,11 +34,13 @@ public class BucketOpenHelper extends SQLiteOpenHelper {
 
     BucketOpenHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        fContext = context;
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(BUCKET_TABLE_CREATE);
+        init(db);
     }
 
     @Override
@@ -53,21 +63,45 @@ public class BucketOpenHelper extends SQLiteOpenHelper {
         return things;
     }
 
-    public void init(ArrayList<Bucket> buckets) {
-        for(Bucket bucket:buckets){
-            insertBucket(bucket);
+    public void init(SQLiteDatabase db) {
+        Resources res = fContext.getResources();
+        // read csv file to create an ArrayList<Bucket>. Bucket (String thing, int flag)
+        InputStream inputStream = res.openRawResource(R.raw.uva111things);
+        BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+        String line;
+        String[] split;
+        String thing;
+        ArrayList<Bucket> in = new ArrayList<>();
+        int flag;
+        ContentValues contentValues = new ContentValues();
+        try {
+            while((line = reader.readLine()) != null) {
+                split = line.split("\t");
+                thing = split[0];
+                flag = Integer.parseInt(split[1]);
+                contentValues.put(KEY_THING, thing);
+                contentValues.put(KEY_FLAG, flag);
+                db.insert(BUCKET_TABLE_NAME, null, contentValues);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+
+//        for(Bucket bucket:in){
+//            insertBucket(bucket);
+//        }
+
     }
 
-    public boolean insertBucket (Bucket bucket)
-    {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(KEY_THING, bucket.getThing());
-        contentValues.put(KEY_FLAG, bucket.getFlag());
-        db.insert(BUCKET_TABLE_NAME, null, contentValues);
-        return true;
-    }
+//    public boolean insertBucket (Bucket bucket)
+//    {
+//        SQLiteDatabase db = this.getWritableDatabase();
+//        ContentValues contentValues = new ContentValues();
+//        contentValues.put(KEY_THING, bucket.getThing());
+//        contentValues.put(KEY_FLAG, bucket.getFlag());
+//        db.insert(BUCKET_TABLE_NAME, null, contentValues);
+//        return true;
+//    }
 
     public boolean toggleFlag(String target) {
         SQLiteDatabase db_r = this.getReadableDatabase();

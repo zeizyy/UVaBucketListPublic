@@ -53,28 +53,6 @@ public class MainActivity extends AppCompatActivity {
 
         db = new BucketOpenHelper(this);
 
-        // read csv file to create an ArrayList<Bucket>. Bucket (String thing, int flag)
-        InputStream inputStream = getResources().openRawResource(R.raw.uva111things);
-        BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
-        String line;
-        String[] split;
-        String thing;
-        ArrayList<Bucket> buckets = new ArrayList<>();
-        int flag;
-        try {
-            while((line = reader.readLine()) != null) {
-                split = line.split("\t");
-                thing = split[0];
-                flag = Integer.parseInt(split[1]);
-                Bucket bucket = new Bucket(thing, flag);
-                buckets.add(bucket);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        db.init(buckets);
-
         final ListView listView = (ListView) findViewById(R.id.listView);
         ArrayList<String> lines = db.getAllThings();
         ArrayList<Boolean> checked = db.getAllFlags();

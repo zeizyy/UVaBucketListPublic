@@ -95,6 +95,8 @@ public class CustomAdapter extends ArrayAdapter<String> {
             public void onClick(View v) {
                 String thing = (String) holder.textView.getText();
                 db.toggleFlag(thing);
+                checked.set(position,!checked.get(position));
+//                Log.i("Database_name",db.getDatabaseName());
             }
         });
         return rowView;
