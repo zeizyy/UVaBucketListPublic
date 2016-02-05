@@ -1,5 +1,6 @@
 package com.uva.vivian.bucketlist_lxz;
 
+import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -9,8 +10,10 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
@@ -49,28 +52,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
         db = new BucketOpenHelper(this);
-
-        // read csv file to create an ArrayList<Bucket>. Bucket (String thing, int flag)
-        InputStream inputStream = getResources().openRawResource(R.raw.uva111things);
-        BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
-        String line;
-        String[] split;
-        String thing;
-        ArrayList<Bucket> buckets = new ArrayList<>();
-        int flag;
-        try {
-            while ((line = reader.readLine()) != null) {
-                split = line.split("\t");
-                thing = split[0];
-                flag = Integer.parseInt(split[1]);
-                Bucket bucket = new Bucket(thing, flag);
-                buckets.add(bucket);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        db.init(buckets);
 
         final ListView listView = (ListView) findViewById(R.id.listView);
         ArrayList<String> lines = db.getAllThings();
