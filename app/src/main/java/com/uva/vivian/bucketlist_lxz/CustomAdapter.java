@@ -2,13 +2,20 @@ package com.uva.vivian.bucketlist_lxz;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.view.LayoutInflater;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -78,10 +85,15 @@ public class CustomAdapter extends ArrayAdapter<String> {
             rowView.setTag(viewHolder);
         }
 
-        ViewHolder holder = (ViewHolder) rowView.getTag();
+        final ViewHolder holder = (ViewHolder) rowView.getTag();
         holder.textView.setText(itemList.get(position));
         holder.checkBox.setChecked(checked.get(position)); // hard coded
-
+        holder.checkBox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String s = (String) holder.textView.getText();
+            }
+        });
         return rowView;
     }
 }

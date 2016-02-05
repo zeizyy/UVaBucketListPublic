@@ -10,6 +10,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -31,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
      * See https://g.co/AppIndexing/AndroidStudio for more information.
      */
     private GoogleApiClient client;
+    BucketOpenHelper db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,32 +51,39 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // read csv file to dynamically generate the list
+        db = new BucketOpenHelper(this);
+
+        // read csv file to create an ArrayList<Bucket>. Bucket (String thing, int flag)
         InputStream inputStream = getResources().openRawResource(R.raw.uva111things);
         BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
-        ListView listView = (ListView) findViewById(R.id.listView);
-        ArrayList<String> lines = new ArrayList<>();
-        ArrayList<Boolean> checked = new ArrayList<>();
+        String line;
+        String[] split;
+        String thing;
+        ArrayList<Bucket> buckets = new ArrayList<>();
+        int flag;
         try {
-            String line;
-            String[] split;
-            while ((line = reader.readLine()) != null) {
+            while((line = reader.readLine()) != null) {
                 split = line.split("\t");
-                lines.add(split[0]);
-                if (split[1].equals("1")) {
-                    checked.add(true);
-                } else {
-                    checked.add(false);
-                }
+                thing = split[0];
+                flag = Integer.parseInt(split[1]);
+                Bucket bucket = new Bucket(thing, flag);
+                buckets.add(bucket);
             }
-
         } catch (IOException e) {
             e.printStackTrace();
         }
 
+        db.init(buckets);
+
+        final ListView listView = (ListView) findViewById(R.id.listView);
+        ArrayList<String> lines = db.getAllThings();
+        ArrayList<Boolean> checked = db.getAllFlags();
+//        ArrayList<String> lines = new ArrayList<>();
+//        ArrayList<Boolean> checked = new ArrayList<>();
+
+
         ListAdapter customAdapter = new CustomAdapter(this, R.id.listView, R.id.textView1, lines, checked);
         listView.setAdapter(customAdapter);
-
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
@@ -104,16 +113,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public void onCheckboxClicked(View view) {
-//        InputStream inputStream = getResources().openRawResource(R.raw.uva111things);
-//        BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
-        Context context = getApplicationContext();
-        CharSequence text =  view.getId()+"";;
-        int duration = Toast.LENGTH_SHORT;
+//    public void onCheckboxClicked(View view) {
 
-        Toast toast = Toast.makeText(context, text, duration);
-        toast.show();
-    }
+//        Context context = getApplicationContext();
+//        CharSequence text =  view.getId()+"";;
+//        int duration = Toast.LENGTH_SHORT;
+//
+//        Toast toast = Toast.makeText(context, text, duration);
+//        toast.show();
+//    }
 
 
     @Override
