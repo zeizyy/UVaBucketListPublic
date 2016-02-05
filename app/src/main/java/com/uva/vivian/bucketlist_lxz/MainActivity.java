@@ -52,8 +52,10 @@ public class MainActivity extends AppCompatActivity {
 //        ArrayList<String> lines = new ArrayList<>();
 //        ArrayList<Boolean> checked = new ArrayList<>();
 
+        ArrayList<Bucket> buckets = db.getAllBuckets();
 
-        ListAdapter customAdapter = new ListViewAdapter(this, R.id.listView, R.id.textView_list_item, lines, checked, db);
+
+        ListAdapter customAdapter = new ListViewAdapter(this, R.id.listView, R.id.textView_list_item, buckets, db);
         listView.setAdapter(customAdapter);
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.

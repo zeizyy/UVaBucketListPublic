@@ -12,7 +12,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.sql.SQLClientInfoException;
 import java.util.ArrayList;
 
 /**
@@ -91,8 +90,8 @@ public class BucketOpenHelper extends SQLiteOpenHelper {
     public boolean insertBucket(Bucket bucket) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put(KEY_THING, bucket.getThing());
-        contentValues.put(KEY_FLAG, bucket.getFlag());
+        contentValues.put(KEY_THING, bucket.getTitle());
+        contentValues.put(KEY_FLAG, bucket.getChecked());
         db.insert(BUCKET_TABLE_NAME, null, contentValues);
         return true;
     }
@@ -109,7 +108,14 @@ public class BucketOpenHelper extends SQLiteOpenHelper {
         int flag = (isChecked) ? 1 : 0;
         contentValues.put(KEY_FLAG, flag);
         db_w.update(BUCKET_TABLE_NAME, contentValues, "id = ? ", new String[]{Integer.toString(id)});
-        Log.i("DB setFlag 2", "Flag set:"+id);
+        Log.i("DB setFlag 2", "Flag set:" + id);
+        return true;
+    }
+
+    public boolean removeBucket(int id) {
+        SQLiteDatabase db_w = this.getWritableDatabase();
+        db_w.delete(BUCKET_TABLE_NAME, "id = ? ", new String[]{Integer.toString(id)});
+        Log.i("DB removeBucket()", "id:" + id);
         return true;
     }
 
@@ -136,9 +142,10 @@ public class BucketOpenHelper extends SQLiteOpenHelper {
         res.moveToFirst();
 
         while (!res.isAfterLast()) {
-            String thing = res.getString(res.getColumnIndex(KEY_THING));
-            int flag = res.getInt(res.getColumnIndex(KEY_FLAG));
-            Bucket bucket = new Bucket(thing, flag);
+            String title = res.getString(res.getColumnIndex(KEY_THING));
+            int checked = res.getInt(res.getColumnIndex(KEY_FLAG));
+            int id = res.getInt(res.getColumnIndex("id"));
+            Bucket bucket = new Bucket(id, checked, title);
             things.add(bucket);
             res.moveToNext();
         }
