@@ -82,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
 //        ArrayList<Boolean> checked = new ArrayList<>();
 
 
-        ListAdapter customAdapter = new CustomAdapter(this, R.id.listView, R.id.textView1, lines, checked);
+        ListAdapter customAdapter = new CustomAdapter(this, R.id.listView, R.id.textView1, lines, checked, db);
         listView.setAdapter(customAdapter);
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.

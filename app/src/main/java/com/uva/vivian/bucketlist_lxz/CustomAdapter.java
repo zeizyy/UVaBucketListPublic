@@ -40,6 +40,7 @@ public class CustomAdapter extends ArrayAdapter<String> {
     HashMap<String, Integer> mIdMap = new HashMap<String, Integer>();
     ArrayList<String> itemList = new ArrayList<>();
     ArrayList<Boolean> checked = new ArrayList<>();
+    BucketOpenHelper db;
     /**
      * Constructor
      *
@@ -49,7 +50,7 @@ public class CustomAdapter extends ArrayAdapter<String> {
      * @param textViewResourceId The id of the TextView within the layout resource to be populated
      * @param objects            The objects to represent in the ListView.
      */
-    public CustomAdapter(Context context, int resource, int textViewResourceId, List<String> objects, ArrayList<Boolean> checked) {
+    public CustomAdapter(Context context, int resource, int textViewResourceId, List<String> objects, ArrayList<Boolean> checked, BucketOpenHelper db) {
         super(context, resource, textViewResourceId, objects);
         inflater = (LayoutInflater) context.
                 getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -59,6 +60,7 @@ public class CustomAdapter extends ArrayAdapter<String> {
             itemList.add(objects.get(i));
         }
         this.checked = checked;
+        this.db = db;
     }
 
     @Override
@@ -91,7 +93,8 @@ public class CustomAdapter extends ArrayAdapter<String> {
         holder.checkBox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String s = (String) holder.textView.getText();
+                String thing = (String) holder.textView.getText();
+                db.toggleFlag(thing);
             }
         });
         return rowView;

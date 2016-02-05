@@ -1,5 +1,6 @@
 package com.uva.vivian.bucketlist_lxz;
 
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -19,7 +20,7 @@ public class BucketOpenHelper extends SQLiteOpenHelper {
     public static final String DATABASE_NAME = "BucketDB.db";
     private static final String BUCKET_TABLE_NAME = "bucket";
     private static final String BUCKET_TABLE_CREATE =
-            "CREATE TABLE " + BUCKET_TABLE_NAME + " (" +
+            "CREATE TABLE " + BUCKET_TABLE_NAME + " (id INTEGER PRIMARY KEY, " +
                     KEY_THING + " TEXT, " +
                     KEY_FLAG + " INT);";
 
@@ -30,11 +31,6 @@ public class BucketOpenHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(BUCKET_TABLE_CREATE);
-        Log.i("DBzyy", BUCKET_TABLE_CREATE);
-//        ContentValues contentValues = new ContentValues();
-//        contentValues.put("thing","Steak the Lawn.");
-//        contentValues.put("flag", 0);
-//        db.insert("bucket", null, contentValues);
     }
 
     @Override
@@ -71,6 +67,29 @@ public class BucketOpenHelper extends SQLiteOpenHelper {
         contentValues.put(KEY_FLAG, bucket.getFlag());
         db.insert(BUCKET_TABLE_NAME, null, contentValues);
         return true;
+    }
+
+    public boolean toggleFlag(String target) {
+        SQLiteDatabase db_r = this.getReadableDatabase();
+        Cursor res = db_r.rawQuery("select * from " + BUCKET_TABLE_NAME + " where " + KEY_THING + "=?", new String[]{target + ""});
+        Log.i("DBMess", "Success");
+        res.moveToFirst();
+        String thing = res.getString(res.getColumnIndex(KEY_THING));
+        int flag = res.getInt(res.getColumnIndex(KEY_FLAG));
+        int col_num = res.getInt(res.getColumnIndex("id"));
+        if (flag == 1){
+            flag = 0;
+        } else {
+            flag = 1;
+        }
+        SQLiteDatabase db_w = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(KEY_THING, thing);
+        contentValues.put(KEY_FLAG, flag);
+        db_w.update(BUCKET_TABLE_NAME, contentValues, "id = ? ", new String[] { Integer.toString(col_num) });
+        Log.i("Togglezyy", "Entry toggled");
+        return true;
+
     }
 
     public ArrayList<Boolean> getAllFlags() {
