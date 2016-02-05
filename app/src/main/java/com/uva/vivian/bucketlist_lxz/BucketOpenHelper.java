@@ -46,22 +46,6 @@ public class BucketOpenHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public ArrayList<String> getAllThings() {
-        ArrayList<String> things = new ArrayList<>();
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor res = db.rawQuery("select * from bucket", null);
-        res.moveToFirst();
-
-        while (!res.isAfterLast()) {
-            String thing = res.getString(res.getColumnIndex(KEY_THING));
-            things.add(thing);
-            res.moveToNext();
-        }
-        res.close();
-        return things;
-    }
-
-
     public void init(SQLiteDatabase db) {
         Resources res = fContext.getResources();
         // read csv file to create an ArrayList<Bucket>. Bucket (String thing, int flag)
@@ -70,7 +54,6 @@ public class BucketOpenHelper extends SQLiteOpenHelper {
         String line;
         String[] split;
         String thing;
-        ArrayList<Bucket> in = new ArrayList<>();
         int flag;
         ContentValues contentValues = new ContentValues();
         try {
@@ -107,33 +90,18 @@ public class BucketOpenHelper extends SQLiteOpenHelper {
         ContentValues contentValues = new ContentValues();
         int flag = (isChecked) ? 1 : 0;
         contentValues.put(KEY_FLAG, flag);
-        db_w.update(BUCKET_TABLE_NAME, contentValues, "id = ? ", new String[]{Integer.toString(id)});
-        Log.i("DB setFlag 2", "Flag set:" + id);
-        return true;
+        int num = db_w.update(BUCKET_TABLE_NAME, contentValues, "id = ? ", new String[]{Integer.toString(id)});
+        Log.i("DB setFlag()", "Flag of " + id + " set to " + flag);
+        return num > 0;
     }
 
     public boolean removeBucket(int id) {
         SQLiteDatabase db_w = this.getWritableDatabase();
-        db_w.delete(BUCKET_TABLE_NAME, "id = ? ", new String[]{Integer.toString(id)});
+        int num = db_w.delete(BUCKET_TABLE_NAME, "id = ? ", new String[]{Integer.toString(id)});
         Log.i("DB removeBucket()", "id:" + id);
-        return true;
+        return num > 0;
     }
 
-
-    public ArrayList<Boolean> getAllFlags() {
-        ArrayList<Boolean> flags = new ArrayList<>();
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor res = db.rawQuery("select * from bucket", null);
-        res.moveToFirst();
-
-        while (!res.isAfterLast()) {
-            int flag = res.getInt(res.getColumnIndex(KEY_FLAG));
-            flags.add(flag == 1);
-            res.moveToNext();
-        }
-        res.close();
-        return flags;
-    }
 
     public ArrayList<Bucket> getAllBuckets() {
         ArrayList<Bucket> things = new ArrayList<>();
