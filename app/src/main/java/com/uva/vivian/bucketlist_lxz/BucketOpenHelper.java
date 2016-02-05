@@ -12,6 +12,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.sql.SQLClientInfoException;
 import java.util.ArrayList;
 
 /**
@@ -96,22 +97,19 @@ public class BucketOpenHelper extends SQLiteOpenHelper {
         return true;
     }
 
-    public boolean setFlag(String thing, boolean isChecked) {
-
-        SQLiteDatabase db_r = this.getReadableDatabase();
-        Cursor res = db_r.rawQuery("select * from " + BUCKET_TABLE_NAME + " where " + KEY_THING + "=?", new String[]{thing});
-        Log.i("DB setFlag 1", "Cursor get");
-        res.moveToFirst();
-        int col_num = res.getInt(res.getColumnIndex("id"));
-        res.close();
+    public boolean setFlag(int id, boolean isChecked) {
+//        SQLiteDatabase db_r = this.getReadableDatabase();
+//        Cursor res = db_r.rawQuery("select * from bucket where id = "+(id+1),null);
+//        res.moveToFirst();
+//        String thing = res.getString(res.getColumnIndex(KEY_THING));
+//        Log.i("Thing",thing);
 
         SQLiteDatabase db_w = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put(KEY_THING, thing);
-        contentValues.put(KEY_FLAG, isChecked);
-        db_w.update(BUCKET_TABLE_NAME, contentValues, "id = ? ", new String[]{Integer.toString(col_num)});
-        Log.i("DB setFlag 2", "Flag set");
-
+        int flag = (isChecked) ? 1 : 0;
+        contentValues.put(KEY_FLAG, flag);
+        db_w.update(BUCKET_TABLE_NAME, contentValues, "id = ? ", new String[]{Integer.toString(id)});
+        Log.i("DB setFlag 2", "Flag set:"+id);
         return true;
     }
 

@@ -2,6 +2,7 @@ package com.uva.vivian.bucketlist_lxz;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -69,15 +70,17 @@ public class ListViewAdapter extends ArrayAdapter<String> {
         final ViewHolder holder = (ViewHolder) rowView.getTag();
         holder.textView.setText(itemList.get(position));
         holder.checkBox.setChecked(checked.get(position));
+        holder.setBucketID(position+1);
 
         return rowView;
     }
 
 
-    private static class ViewHolder {
+    private class ViewHolder {
         TextView textView;
         CheckBox checkBox;
         Context context;
+        int bucketID;
 
         public ViewHolder(Context context, TextView textView, CheckBox checkBox) {
             this.context = context;
@@ -86,7 +89,11 @@ public class ListViewAdapter extends ArrayAdapter<String> {
             this.checkBox = checkBox;
 
             this.textView.setOnClickListener(onClickListener);
-            this.checkBox.setOnCheckedChangeListener(onCheckedChangeListener);
+            this.checkBox.setOnClickListener(onClickListener_c);
+        }
+
+        public void setBucketID (int bucketID) {
+            this.bucketID = bucketID;
         }
 
 
@@ -99,11 +106,12 @@ public class ListViewAdapter extends ArrayAdapter<String> {
             }
         };
 
-        private CheckBox.OnCheckedChangeListener onCheckedChangeListener = new CheckBox.OnCheckedChangeListener() {
+        private CheckBox.OnClickListener onClickListener_c = new View.OnClickListener() {
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                String thing = (String) textView.getText();
-                db.setFlag(thing, isChecked);
+            public void onClick(View v) {
+                boolean isChecked = ((CheckBox) v).isChecked();
+                db.setFlag(bucketID, isChecked);
+                checked.set(bucketID-1,isChecked);
             }
         };
     }
