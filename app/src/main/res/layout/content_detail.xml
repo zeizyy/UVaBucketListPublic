@@ -24,13 +24,13 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textStyle="bold"
-            android:id="@+id/textView3" />
+            android:id="@+id/textView_detail_title" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="Description: more thing should be added but I don't know what to do right now;("
-            android:id="@+id/textView4" />
+            android:id="@+id/textView_detail_description" />
     </LinearLayout>
 </RelativeLayout>

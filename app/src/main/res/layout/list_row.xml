@@ -5,13 +5,13 @@
     android:orientation="horizontal">
 
     <CheckBox
-        android:id="@+id/checkBox1"
+        android:id="@+id/checkBox_list_item"
         android:layout_width="wrap_content"
         android:layout_height="match_parent" />
 
 
     <TextView
-        android:id="@+id/textView1"
+        android:id="@+id/textView_list_item"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center_vertical"

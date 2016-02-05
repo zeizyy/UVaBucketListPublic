@@ -96,20 +96,22 @@ public class BucketOpenHelper extends SQLiteOpenHelper {
         return true;
     }
 
-    public boolean setFlag(String target, boolean isChecked) {
+    public boolean setFlag(String thing, boolean isChecked) {
+
         SQLiteDatabase db_r = this.getReadableDatabase();
-        Cursor res = db_r.rawQuery("select * from " + BUCKET_TABLE_NAME + " where " + KEY_THING + "=?", new String[]{target});
+        Cursor res = db_r.rawQuery("select * from " + BUCKET_TABLE_NAME + " where " + KEY_THING + "=?", new String[]{thing});
         Log.i("DB setFlag 1", "Cursor get");
         res.moveToFirst();
-        String thing = res.getString(res.getColumnIndex(KEY_THING));
         int col_num = res.getInt(res.getColumnIndex("id"));
         res.close();
+
         SQLiteDatabase db_w = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(KEY_THING, thing);
         contentValues.put(KEY_FLAG, isChecked);
         db_w.update(BUCKET_TABLE_NAME, contentValues, "id = ? ", new String[]{Integer.toString(col_num)});
         Log.i("DB setFlag 2", "Flag set");
+
         return true;
     }
 
@@ -122,8 +124,7 @@ public class BucketOpenHelper extends SQLiteOpenHelper {
 
         while (!res.isAfterLast()) {
             int flag = res.getInt(res.getColumnIndex(KEY_FLAG));
-            boolean bflag = (flag == 1);
-            flags.add(bflag);
+            flags.add(flag == 1);
             res.moveToNext();
         }
         res.close();

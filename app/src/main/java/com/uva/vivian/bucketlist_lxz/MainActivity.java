@@ -1,6 +1,5 @@
 package com.uva.vivian.bucketlist_lxz;
 
-import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -10,19 +9,13 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
@@ -60,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
 //        ArrayList<Boolean> checked = new ArrayList<>();
 
 
-        ListAdapter customAdapter = new ListViewAdapter(this, R.id.listView, R.id.textView1, lines, checked, db);
+        ListAdapter customAdapter = new ListViewAdapter(this, R.id.listView, R.id.textView_list_item, lines, checked, db);
         listView.setAdapter(customAdapter);
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.

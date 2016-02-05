@@ -62,7 +62,7 @@ public class ListViewAdapter extends ArrayAdapter<String> {
 
         if (rowView == null) {
             rowView = inflater.inflate(R.layout.list_row, null);
-            ViewHolder viewHolder = new ViewHolder(context, (TextView) rowView.findViewById(R.id.textView1), (CheckBox) rowView.findViewById(R.id.checkBox1));
+            ViewHolder viewHolder = new ViewHolder(context, (TextView) rowView.findViewById(R.id.textView_list_item), (CheckBox) rowView.findViewById(R.id.checkBox_list_item));
             rowView.setTag(viewHolder);
         }
 
