@@ -1,6 +1,5 @@
 package com.uva.vivian.bucketlist_lxz;
 
-import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -10,10 +9,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
@@ -62,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
         ArrayList<Bucket> buckets = new ArrayList<>();
         int flag;
         try {
-            while((line = reader.readLine()) != null) {
+            while ((line = reader.readLine()) != null) {
                 split = line.split("\t");
                 thing = split[0];
                 flag = Integer.parseInt(split[1]);
@@ -82,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
 //        ArrayList<Boolean> checked = new ArrayList<>();
 
 
-        ListAdapter customAdapter = new CustomAdapter(this, R.id.listView, R.id.textView1, lines, checked, db);
+        ListAdapter customAdapter = new ListViewAdapter(this, R.id.listView, R.id.textView1, lines, checked, db);
         listView.setAdapter(customAdapter);
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -111,17 +108,6 @@ public class MainActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
-
-
-//    public void onCheckboxClicked(View view) {
-
-//        Context context = getApplicationContext();
-//        CharSequence text =  view.getId()+"";;
-//        int duration = Toast.LENGTH_SHORT;
-//
-//        Toast toast = Toast.makeText(context, text, duration);
-//        toast.show();
-//    }
 
 
     @Override

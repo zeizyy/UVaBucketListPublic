@@ -7,6 +7,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 
@@ -50,17 +51,17 @@ public class BucketOpenHelper extends SQLiteOpenHelper {
             things.add(thing);
             res.moveToNext();
         }
+        res.close();
         return things;
     }
 
     public void init(ArrayList<Bucket> buckets) {
-        for(Bucket bucket:buckets){
+        for (Bucket bucket : buckets) {
             insertBucket(bucket);
         }
     }
 
-    public boolean insertBucket (Bucket bucket)
-    {
+    public boolean insertBucket(Bucket bucket) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(KEY_THING, bucket.getThing());
@@ -69,28 +70,23 @@ public class BucketOpenHelper extends SQLiteOpenHelper {
         return true;
     }
 
-    public boolean toggleFlag(String target) {
+    public boolean setFlag(String target, boolean isChecked) {
         SQLiteDatabase db_r = this.getReadableDatabase();
-        Cursor res = db_r.rawQuery("select * from " + BUCKET_TABLE_NAME + " where " + KEY_THING + "=?", new String[]{target + ""});
-        Log.i("DBMess", "Success");
+        Cursor res = db_r.rawQuery("select * from " + BUCKET_TABLE_NAME + " where " + KEY_THING + "=?", new String[]{target});
+        Log.i("DB setFlag 1", "Cursor get");
         res.moveToFirst();
         String thing = res.getString(res.getColumnIndex(KEY_THING));
-        int flag = res.getInt(res.getColumnIndex(KEY_FLAG));
         int col_num = res.getInt(res.getColumnIndex("id"));
-        if (flag == 1){
-            flag = 0;
-        } else {
-            flag = 1;
-        }
+        res.close();
         SQLiteDatabase db_w = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(KEY_THING, thing);
-        contentValues.put(KEY_FLAG, flag);
-        db_w.update(BUCKET_TABLE_NAME, contentValues, "id = ? ", new String[] { Integer.toString(col_num) });
-        Log.i("Togglezyy", "Entry toggled");
+        contentValues.put(KEY_FLAG, isChecked);
+        db_w.update(BUCKET_TABLE_NAME, contentValues, "id = ? ", new String[]{Integer.toString(col_num)});
+        Log.i("DB setFlag 2", "Flag set");
         return true;
-
     }
+
 
     public ArrayList<Boolean> getAllFlags() {
         ArrayList<Boolean> flags = new ArrayList<>();
@@ -98,19 +94,20 @@ public class BucketOpenHelper extends SQLiteOpenHelper {
         Cursor res = db.rawQuery("select * from bucket", null);
         res.moveToFirst();
 
-        while(!res.isAfterLast()) {
+        while (!res.isAfterLast()) {
             int flag = res.getInt(res.getColumnIndex(KEY_FLAG));
             boolean bflag = (flag == 1);
             flags.add(bflag);
             res.moveToNext();
         }
+        res.close();
         return flags;
     }
 
     public ArrayList<Bucket> getAllBuckets() {
         ArrayList<Bucket> things = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor res = db.rawQuery("select * from "+BUCKET_TABLE_NAME, null);
+        Cursor res = db.rawQuery("select * from " + BUCKET_TABLE_NAME, null);
         res.moveToFirst();
 
         while (!res.isAfterLast()) {
@@ -120,6 +117,9 @@ public class BucketOpenHelper extends SQLiteOpenHelper {
             things.add(bucket);
             res.moveToNext();
         }
+        res.close();
         return things;
     }
+
+
 }

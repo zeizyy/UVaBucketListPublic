@@ -2,21 +2,14 @@ package com.uva.vivian.bucketlist_lxz;
 
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.view.LayoutInflater;
+import android.widget.CompoundButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -25,22 +18,15 @@ import java.util.List;
  * Created by xiongqian on 2/4/16.
  * .
  */
-public class CustomAdapter extends ArrayAdapter<String> {
+public class ListViewAdapter extends ArrayAdapter<String> {
     private static LayoutInflater inflater = null;
-    private TextView.OnClickListener onClickListener = new TextView.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            Intent intent = new Intent(v.getContext(), DetailActivity.class);
-            intent.putExtra("title", ((TextView) v).getText());
-            context.startActivity(intent);
-        }
-    };
-    Context context;
+    static BucketOpenHelper db;
 
+    Context context;
     HashMap<String, Integer> mIdMap = new HashMap<String, Integer>();
     ArrayList<String> itemList = new ArrayList<>();
     ArrayList<Boolean> checked = new ArrayList<>();
-    BucketOpenHelper db;
+
     /**
      * Constructor
      *
@@ -50,7 +36,7 @@ public class CustomAdapter extends ArrayAdapter<String> {
      * @param textViewResourceId The id of the TextView within the layout resource to be populated
      * @param objects            The objects to represent in the ListView.
      */
-    public CustomAdapter(Context context, int resource, int textViewResourceId, List<String> objects, ArrayList<Boolean> checked, BucketOpenHelper db) {
+    public ListViewAdapter(Context context, int resource, int textViewResourceId, List<String> objects, ArrayList<Boolean> checked, BucketOpenHelper bucketOpenHelper) {
         super(context, resource, textViewResourceId, objects);
         inflater = (LayoutInflater) context.
                 getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -60,7 +46,7 @@ public class CustomAdapter extends ArrayAdapter<String> {
             itemList.add(objects.get(i));
         }
         this.checked = checked;
-        this.db = db;
+        db = bucketOpenHelper;
     }
 
     @Override
@@ -69,10 +55,6 @@ public class CustomAdapter extends ArrayAdapter<String> {
         return mIdMap.get(item);
     }
 
-    private static class ViewHolder {
-        TextView textView;
-        CheckBox checkBox;
-    }
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
@@ -80,23 +62,51 @@ public class CustomAdapter extends ArrayAdapter<String> {
 
         if (rowView == null) {
             rowView = inflater.inflate(R.layout.list_row, null);
-            ViewHolder viewHolder = new ViewHolder();
-            viewHolder.textView = (TextView) rowView.findViewById(R.id.textView1);
-            viewHolder.checkBox = (CheckBox) rowView.findViewById(R.id.checkBox1);
-            viewHolder.textView.setOnClickListener(onClickListener);
+            ViewHolder viewHolder = new ViewHolder(context, (TextView) rowView.findViewById(R.id.textView1), (CheckBox) rowView.findViewById(R.id.checkBox1));
             rowView.setTag(viewHolder);
         }
 
         final ViewHolder holder = (ViewHolder) rowView.getTag();
         holder.textView.setText(itemList.get(position));
-        holder.checkBox.setChecked(checked.get(position)); // hard coded
-        holder.checkBox.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String thing = (String) holder.textView.getText();
-                db.toggleFlag(thing);
-            }
-        });
+        holder.checkBox.setChecked(checked.get(position));
+
         return rowView;
     }
+
+
+    private static class ViewHolder {
+        TextView textView;
+        CheckBox checkBox;
+        Context context;
+
+        public ViewHolder(Context context, TextView textView, CheckBox checkBox) {
+            this.context = context;
+
+            this.textView = textView;
+            this.checkBox = checkBox;
+
+            this.textView.setOnClickListener(onClickListener);
+            this.checkBox.setOnCheckedChangeListener(onCheckedChangeListener);
+        }
+
+
+        private TextView.OnClickListener onClickListener = new TextView.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(v.getContext(), DetailActivity.class);
+                intent.putExtra("title", ((TextView) v).getText());
+                context.startActivity(intent);
+            }
+        };
+
+        private CheckBox.OnCheckedChangeListener onCheckedChangeListener = new CheckBox.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                String thing = (String) textView.getText();
+                db.setFlag(thing, isChecked);
+            }
+        };
+    }
+
+
 }
