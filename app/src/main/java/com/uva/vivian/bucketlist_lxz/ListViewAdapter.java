@@ -99,7 +99,7 @@ public class ListViewAdapter extends ArrayAdapter<Bucket> {
             this.checkBox.setOnClickListener(onClickListener_c);
 
             this.textView = textView;
-            this.textView.setOnTouchListener(onSwipeTouchListener);
+//            this.textView.setOnTouchListener(onSwipeTouchListener);
             this.textView.setOnClickListener(onClickListener);
 
         }
@@ -118,7 +118,7 @@ public class ListViewAdapter extends ArrayAdapter<Bucket> {
             public void onClick(View v) {
                 Log.d("TextView onCLick", "Clicked");
                 Intent intent = new Intent(v.getContext(), DetailActivity.class);
-                intent.putExtra("title", ((TextView) v).getText()); // TODO
+                intent.putExtra("id", bucketList.get(position).getId());
                 context.startActivity(intent);
             }
         };

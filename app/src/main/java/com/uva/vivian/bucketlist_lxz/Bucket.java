@@ -2,6 +2,7 @@ package com.uva.vivian.bucketlist_lxz;
 
 /**
  * Created by ian_zheng on 2/4/16.
+ * .
  */
 public class Bucket {
     private String title;

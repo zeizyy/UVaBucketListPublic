@@ -25,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
      * See https://g.co/AppIndexing/AndroidStudio for more information.
      */
     private GoogleApiClient client;
-    BucketOpenHelper db;
+    static BucketOpenHelper db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
         ArrayList<Bucket> buckets = db.getAllBuckets();
         ListAdapter customAdapter = new ListViewAdapter(this, R.id.listView, R.id.textView_list_item, buckets, db);
         listView.setAdapter(customAdapter);
-        
+
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();

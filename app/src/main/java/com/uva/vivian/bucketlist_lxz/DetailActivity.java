@@ -14,10 +14,13 @@ public class DetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         // comment
         super.onCreate(savedInstanceState);
-        String title = getIntent().getExtras().getString("title");
+        int id = getIntent().getExtras().getInt("id");
+        Bucket bucket = MainActivity.db.getBucket(id);
+
         setContentView(R.layout.activity_detail);
         TextView t = (TextView) findViewById(R.id.textView_detail_title);
-        t.setText(title);
+        t.setText(bucket.getTitle());
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);

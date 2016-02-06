@@ -16,6 +16,7 @@ import java.util.ArrayList;
 
 /**
  * Created by ian_zheng on 2/4/16.
+ * .
  */
 public class BucketOpenHelper extends SQLiteOpenHelper {
     private final Context fContext;
@@ -81,7 +82,7 @@ public class BucketOpenHelper extends SQLiteOpenHelper {
 
     public boolean setFlag(int id, boolean isChecked) {
 //        SQLiteDatabase db_r = this.getReadableDatabase();
-//        Cursor res = db_r.rawQuery("select * from bucket where id = "+(id+1),null);
+//        Cursor res = db_r.rawQuery("select * from bucket where id = "+(id),null);
 //        res.moveToFirst();
 //        String thing = res.getString(res.getColumnIndex(KEY_THING));
 //        Log.i("Thing",thing);
@@ -100,6 +101,16 @@ public class BucketOpenHelper extends SQLiteOpenHelper {
         int num = db_w.delete(BUCKET_TABLE_NAME, "id = ? ", new String[]{Integer.toString(id)});
         Log.i("DB removeBucket()", "id:" + id);
         return num > 0;
+    }
+
+    public Bucket getBucket(int id) {
+        SQLiteDatabase db_r = this.getReadableDatabase();
+        Cursor res = db_r.rawQuery("select * from " + BUCKET_TABLE_NAME + " where id = ? ", new String[]{id + ""});
+        res.moveToFirst();
+        int checked = res.getInt(res.getColumnIndex(KEY_FLAG));
+        String title = res.getString(res.getColumnIndex(KEY_THING));
+        res.close();
+        return new Bucket(id, checked, title);
     }
 
 
