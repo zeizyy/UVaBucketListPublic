@@ -6,6 +6,8 @@ import android.util.Log;
 import android.util.SparseArray;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.view.LayoutInflater;
@@ -28,6 +30,7 @@ public class ListViewAdapter extends ArrayAdapter<Bucket> {
     SparseArray<Bucket> idToBucketMap = new SparseArray<>();
 
     ArrayList<Bucket> bucketList = new ArrayList<>();
+    private int lastPosition = -1;
 
     /**
      * Constructor
@@ -78,6 +81,10 @@ public class ListViewAdapter extends ArrayAdapter<Bucket> {
         holder.position = position;
         holder.textView.setText(bucketList.get(position).getTitle());
         holder.checkBox.setChecked(bucketList.get(position).getChecked() == 1);
+
+        Animation animation = AnimationUtils.loadAnimation(getContext(), (position > lastPosition) ? R.anim.up_from_bottom : R.anim.down_from_top);
+        holder.textView.startAnimation(animation);
+        lastPosition = position;
 
         return rowView;
     }

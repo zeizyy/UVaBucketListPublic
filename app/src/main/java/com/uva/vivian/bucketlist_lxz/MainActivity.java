@@ -49,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
         db = new BucketOpenHelper(this);
 
         final ListView listView = (ListView) findViewById(R.id.listView);
+        listView.setDivider(null);
         ArrayList<Bucket> buckets = db.getAllBuckets();
         adapter = new ListViewAdapter(this, R.id.listView, R.id.textView_list_item, buckets, db);
         listView.setAdapter(adapter);
