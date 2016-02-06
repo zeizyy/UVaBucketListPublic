@@ -69,7 +69,7 @@ public class ListViewAdapter extends ArrayAdapter<Bucket> {
         View rowView = convertView;
 
         if (rowView == null) {
-            rowView = inflater.inflate(R.layout.list_row, null);
+            rowView = inflater.inflate(R.layout.list_row, parent, false);
             ViewHolder viewHolder = new ViewHolder(context, (TextView) rowView.findViewById(R.id.textView_list_item), (CheckBox) rowView.findViewById(R.id.checkBox_list_item));
             rowView.setTag(viewHolder);
         }
