@@ -6,7 +6,8 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.TextView;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 
 public class DetailActivity extends AppCompatActivity {
 
@@ -15,11 +16,18 @@ public class DetailActivity extends AppCompatActivity {
         // comment
         super.onCreate(savedInstanceState);
         int id = getIntent().getExtras().getInt("id");
-        Bucket bucket = MainActivity.db.getBucket(id);
+        final Bucket bucket = MainActivity.db.getBucket(id);
 
         setContentView(R.layout.activity_detail);
-        TextView t = (TextView) findViewById(R.id.textView_detail_title);
-        t.setText(bucket.getTitle());
+        CheckBox checkBox = (CheckBox) findViewById(R.id.checkBox_detail_title);
+        checkBox.setText(bucket.getTitle());
+        checkBox.setChecked(bucket.getChecked() == 1);
+        checkBox.setOnCheckedChangeListener(new CheckBox.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                MainActivity.adapter.setChecked(bucket.getId(), isChecked);
+            }
+        });
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);

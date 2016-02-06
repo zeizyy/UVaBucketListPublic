@@ -31,4 +31,8 @@ public class Bucket {
     public int getId() {
         return id;
     }
+
+    public void setChecked(boolean checked) {
+        this.checked = checked ? 1 : 0;
+    }
 }

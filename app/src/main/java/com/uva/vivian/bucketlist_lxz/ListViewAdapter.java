@@ -3,6 +3,7 @@ package com.uva.vivian.bucketlist_lxz;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
+import android.util.SparseArray;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -24,6 +25,8 @@ public class ListViewAdapter extends ArrayAdapter<Bucket> {
 
     Context context;
     //    HashMap<Bucket, Integer> mIdMap = new HashMap<Bucket, Integer>();
+    SparseArray<Bucket> idToBucketMap = new SparseArray<>();
+
     ArrayList<Bucket> bucketList = new ArrayList<>();
 
     /**
@@ -40,9 +43,10 @@ public class ListViewAdapter extends ArrayAdapter<Bucket> {
         inflater = (LayoutInflater) context.
                 getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.context = context;
-        for (int i = 0; i < objects.size(); ++i) {
-//            mIdMap.put(objects.get(i), i);
-            bucketList.add(objects.get(i));
+        for (Bucket bucket : objects) {
+//            mIdMap.put(bucket, bucket.getId());
+            idToBucketMap.put(bucket.getId(), bucket);
+            bucketList.add(bucket);
         }
         db = bucketOpenHelper;
     }
@@ -74,9 +78,15 @@ public class ListViewAdapter extends ArrayAdapter<Bucket> {
         holder.position = position;
         holder.textView.setText(bucketList.get(position).getTitle());
         holder.checkBox.setChecked(bucketList.get(position).getChecked() == 1);
-//        holder.setBucketID(position + 1);
 
         return rowView;
+    }
+
+    public boolean setChecked(int id, boolean checked) {
+        Bucket bucket = idToBucketMap.get(id);
+        bucket.setChecked(checked);
+        this.notifyDataSetChanged();
+        return db.setFlag(bucket.getId(), checked);
     }
 
     public boolean removeItem(int position) {

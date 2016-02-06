@@ -1,5 +1,6 @@
 package com.uva.vivian.bucketlist_lxz;
 
+import android.app.Activity;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -26,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
      */
     private GoogleApiClient client;
     static BucketOpenHelper db;
+    static ListViewAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,8 +50,8 @@ public class MainActivity extends AppCompatActivity {
 
         final ListView listView = (ListView) findViewById(R.id.listView);
         ArrayList<Bucket> buckets = db.getAllBuckets();
-        ListAdapter customAdapter = new ListViewAdapter(this, R.id.listView, R.id.textView_list_item, buckets, db);
-        listView.setAdapter(customAdapter);
+        adapter = new ListViewAdapter(this, R.id.listView, R.id.textView_list_item, buckets, db);
+        listView.setAdapter(adapter);
 
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -119,4 +121,5 @@ public class MainActivity extends AppCompatActivity {
         AppIndex.AppIndexApi.end(client, viewAction);
         client.disconnect();
     }
+
 }

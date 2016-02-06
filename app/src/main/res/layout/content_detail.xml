@@ -13,24 +13,25 @@
     tools:showIn="@layout/activity_detail">
 
     <LinearLayout
-        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true">
+        android:orientation="vertical">
 
-        <TextView
+        <CheckBox
+            android:id="@+id/checkBox_detail_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:text="New CheckBox"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textStyle="bold"
-            android:id="@+id/textView_detail_title" />
+            android:textStyle="bold" />
 
         <TextView
+            android:id="@+id/textView_detail_description"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="Description: more thing should be added but I don't know what to do right now;("
-            android:id="@+id/textView_detail_description" />
+            android:textAppearance="?android:attr/textAppearanceMedium" />
     </LinearLayout>
 </RelativeLayout>
