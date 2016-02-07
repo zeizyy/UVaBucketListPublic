@@ -20,7 +20,7 @@ import java.util.ArrayList;
  */
 public class BucketOpenHelper extends SQLiteOpenHelper {
     private final Context fContext;
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
     public static final String KEY_THING = "thing";
     public static final String KEY_FLAG = "flag";
     public static final String KEY_DES = "description";
