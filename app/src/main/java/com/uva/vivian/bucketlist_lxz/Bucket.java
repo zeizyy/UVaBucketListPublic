@@ -8,11 +8,13 @@ public class Bucket {
     private String title;
     private int checked;
     private int id;
+    private String des;
 
-    public Bucket(int id, int checked, String title) {
+    public Bucket(int id, int checked, String title, String des) {
         this.title = title;
         this.checked = checked;
         this.id = id;
+        this.des = des;
     }
 
     public String getTitle() {
@@ -34,5 +36,9 @@ public class Bucket {
 
     public void setChecked(boolean checked) {
         this.checked = checked ? 1 : 0;
+    }
+
+    public String getDes() {
+        return this.des;
     }
 }

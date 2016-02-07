@@ -8,6 +8,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.TextView;
 
 public class DetailActivity extends AppCompatActivity {
 
@@ -28,6 +29,9 @@ public class DetailActivity extends AppCompatActivity {
                 MainActivity.adapter.setChecked(bucket.getId(), isChecked);
             }
         });
+
+        TextView textView = (TextView) findViewById(R.id.textView_detail_description);
+        textView.setText(bucket.getDes());
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);

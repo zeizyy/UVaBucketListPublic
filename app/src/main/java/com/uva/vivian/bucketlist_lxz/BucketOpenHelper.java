@@ -23,12 +23,13 @@ public class BucketOpenHelper extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 1;
     public static final String KEY_THING = "thing";
     public static final String KEY_FLAG = "flag";
+    public static final String KEY_DES = "description";
     public static final String DATABASE_NAME = "BucketDB.db";
     private static final String BUCKET_TABLE_NAME = "bucket";
     private static final String BUCKET_TABLE_CREATE =
             "CREATE TABLE " + BUCKET_TABLE_NAME + " (id INTEGER PRIMARY KEY, " +
                     KEY_THING + " TEXT, " +
-                    KEY_FLAG + " INT);";
+                    KEY_FLAG + " INT, " + KEY_DES + " TEXT);";
 
     BucketOpenHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -55,6 +56,7 @@ public class BucketOpenHelper extends SQLiteOpenHelper {
         String line;
         String[] split;
         String thing;
+        String des;
         int flag;
         ContentValues contentValues = new ContentValues();
         try {
@@ -62,8 +64,10 @@ public class BucketOpenHelper extends SQLiteOpenHelper {
                 split = line.split("\t");
                 thing = split[0];
                 flag = Integer.parseInt(split[1]);
+                des = split[2];
                 contentValues.put(KEY_THING, thing);
                 contentValues.put(KEY_FLAG, flag);
+                contentValues.put(KEY_DES, des);
                 db.insert(BUCKET_TABLE_NAME, null, contentValues);
             }
         } catch (IOException e) {
@@ -109,8 +113,9 @@ public class BucketOpenHelper extends SQLiteOpenHelper {
         res.moveToFirst();
         int checked = res.getInt(res.getColumnIndex(KEY_FLAG));
         String title = res.getString(res.getColumnIndex(KEY_THING));
+        String des = res.getString(res.getColumnIndex(KEY_DES));
         res.close();
-        return new Bucket(id, checked, title);
+        return new Bucket(id, checked, title, des);
     }
 
 
@@ -124,7 +129,8 @@ public class BucketOpenHelper extends SQLiteOpenHelper {
             String title = res.getString(res.getColumnIndex(KEY_THING));
             int checked = res.getInt(res.getColumnIndex(KEY_FLAG));
             int id = res.getInt(res.getColumnIndex("id"));
-            Bucket bucket = new Bucket(id, checked, title);
+            String des = res.getString(res.getColumnIndex(KEY_DES));
+            Bucket bucket = new Bucket(id, checked, title, des);
             things.add(bucket);
             res.moveToNext();
         }
