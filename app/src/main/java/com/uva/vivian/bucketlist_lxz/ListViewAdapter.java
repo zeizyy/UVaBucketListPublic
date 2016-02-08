@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 import android.util.SparseArray;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
@@ -109,36 +110,26 @@ public class ListViewAdapter extends ArrayAdapter<Bucket> {
         CheckBox checkBox;
         Context context;
 
-        public ViewHolder(Context context, TextView textView, CheckBox checkBox) {
+        public ViewHolder(final Context context, TextView textView, CheckBox checkBox) {
             this.context = context;
 
             this.checkBox = checkBox;
             this.checkBox.setOnClickListener(onClickListener_c);
 
             this.textView = textView;
-//            this.textView.setOnTouchListener(onSwipeTouchListener);
-            this.textView.setOnClickListener(onClickListener);
+            textView.setOnTouchListener(new OnSwipeTouchListener(this.context){
+                public void onSwipeLeft() {
+                    removeItem(position);
+                }
 
+                public void onClick() {
+                    Log.d("TextView onCLick", "Clicked");
+                    Intent intent = new Intent(context, DetailActivity.class);
+                    intent.putExtra("id", bucketList.get(position).getId());
+                    context.startActivity(intent);
+                }
+            });
         }
-
-        private OnSwipeTouchListener onSwipeTouchListener = new OnSwipeTouchListener(context) {
-
-            public void onSwipeLeft() {
-                removeItem(position);
-//                Toast.makeText(context, "left", Toast.LENGTH_SHORT).show();
-            }
-
-        };
-
-        private TextView.OnClickListener onClickListener = new TextView.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d("TextView onCLick", "Clicked");
-                Intent intent = new Intent(v.getContext(), DetailActivity.class);
-                intent.putExtra("id", bucketList.get(position).getId());
-                context.startActivity(intent);
-            }
-        };
 
         private CheckBox.OnClickListener onClickListener_c = new View.OnClickListener() {
             @Override
