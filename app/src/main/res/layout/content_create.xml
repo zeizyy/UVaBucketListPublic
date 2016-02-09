@@ -12,39 +12,35 @@
     tools:context="com.uva.vivian.bucketlist_lxz.CreateActivity"
     tools:showIn="@layout/activity_create">
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_alignParentBottom="true"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_alignParentBottom="true">
+        android:orientation="vertical">
 
 
         <EditText
+            android:id="@+id/editText_create_title"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/editText"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentStart="true"
-            android:hint="Bucket Name" />
+            android:hint="Bucket Name"
+            android:singleLine="true" />
 
         <EditText
+            android:id="@+id/editText_create_description"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:inputType="textMultiLine"
             android:ems="10"
-            android:id="@+id/editText2"
-            android:layout_below="@+id/editText"
-            android:layout_alignParentStart="true"
-            android:hint="Description" />
+            android:hint="Description"
+            android:inputType="textMultiLine" />
 
         <Button
+            android:id="@+id/button_create_bucket"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="Create Bucket"
-            android:id="@+id/button"
             android:onClick="createBucket"
-            android:layout_below="@+id/editText2"
-            android:layout_alignParentStart="true" />
-    </RelativeLayout>
+            android:text="Create Bucket" />
+    </LinearLayout>
 </RelativeLayout>
