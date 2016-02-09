@@ -40,14 +40,19 @@ public class CreateActivity extends AppCompatActivity {
             Toast.makeText(context, "Missing required field(s)", Toast.LENGTH_SHORT).show();
             return;
         }
+
         Bucket bucket = new Bucket(name, description);
-        MainActivity.adapter.insertItem(bucket, MainActivity.adapter.getCount());
+        if (MainActivity.adapter.insertItem(bucket)) {
+            Toast.makeText(context, "New Bucket Created!", Toast.LENGTH_SHORT).show();
+            finish();
+        } else {
+            Toast.makeText(context, "Fail to create a new bucket :(", Toast.LENGTH_SHORT).show();
+        }
+
 //        MainActivity.adapter.insertItem(bucket, 0); // insert at front
-        Toast.makeText(context, "New Bucket Created!", Toast.LENGTH_SHORT).show();
 //        Intent intent = new Intent(context, MainActivity.class);
 //        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 //        startActivity(intent);
-        finish();
     }
 
 }

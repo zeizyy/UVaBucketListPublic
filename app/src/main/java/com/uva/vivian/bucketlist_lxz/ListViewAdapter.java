@@ -95,15 +95,22 @@ public class ListViewAdapter extends ArrayAdapter<Bucket> {
         return db.setFlag(bucket.getId(), checked);
     }
 
-    public boolean insertItem(Bucket bucket, int id) {
-        bucketList.add(id, bucket);
-        this.notifyDataSetChanged();
-        return db.insertBucket(bucket);
+    public boolean insertItem(Bucket bucket) {
+        bucketList.add(bucket);
+        if (db.insertBucket(bucket)) {
+            idToBucketMap.put(bucket.getId(), bucket);
+            this.notifyDataSetChanged();
+            return true;
+        } else {
+            return false;
+        }
+
     }
 
     public boolean removeItem(int position) {
         Bucket bucket = bucketList.get(position);
         bucketList.remove(position);
+        idToBucketMap.removeAt(position);
         this.notifyDataSetChanged();
         return db.removeBucket(bucket.getId());
     }
