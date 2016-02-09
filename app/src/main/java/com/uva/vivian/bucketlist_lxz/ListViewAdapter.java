@@ -95,6 +95,12 @@ public class ListViewAdapter extends ArrayAdapter<Bucket> {
         return db.setFlag(bucket.getId(), checked);
     }
 
+    public boolean insertItem(Bucket bucket, int id) {
+        bucketList.add(id, bucket);
+        this.notifyDataSetChanged();
+        return db.insertBucket(bucket);
+    }
+
     public boolean removeItem(int position) {
         Bucket bucket = bucketList.get(position);
         bucketList.remove(position);

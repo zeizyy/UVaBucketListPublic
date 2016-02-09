@@ -11,6 +11,8 @@ public class Bucket {
     private String description;
 
     public Bucket(String title, String description) {
+        this.id = -1;
+        this.checked = 0;
         this.title = title.trim();
         this.description = description.trim();
     }
@@ -37,6 +39,10 @@ public class Bucket {
 
     public int getId() {
         return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public void setChecked(boolean checked) {

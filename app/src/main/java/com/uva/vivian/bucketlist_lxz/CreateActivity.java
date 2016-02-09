@@ -12,7 +12,6 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 public class CreateActivity extends AppCompatActivity {
-    static BucketOpenHelper db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,8 +28,6 @@ public class CreateActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
-
-        db = new BucketOpenHelper(this);
     }
 
     public void createBucket(View view) {
@@ -44,11 +41,13 @@ public class CreateActivity extends AppCompatActivity {
             return;
         }
         Bucket bucket = new Bucket(name, description);
-        db.insertBucket(bucket);
+        MainActivity.adapter.insertItem(bucket, MainActivity.adapter.getCount());
+//        MainActivity.adapter.insertItem(bucket, 0); // insert at front
         Toast.makeText(context, "New Bucket Created!", Toast.LENGTH_SHORT).show();
-        Intent intent = new Intent(context, MainActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        startActivity(intent);
+//        Intent intent = new Intent(context, MainActivity.class);
+//        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//        startActivity(intent);
+        finish();
     }
 
 }
