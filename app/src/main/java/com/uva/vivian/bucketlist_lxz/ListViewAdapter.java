@@ -93,7 +93,7 @@ public class ListViewAdapter extends ArrayAdapter<Bucket> {
     public boolean setChecked(int id, boolean checked) {
         Bucket bucket = idToBucketMap.get(id);
         bucket.setChecked(checked);
-        this.notifyDataSetChanged();
+//        this.notifyDataSetChanged(); // this will trigger animation
         return db.setFlag(bucket.getId(), checked);
     }
 
@@ -117,7 +117,7 @@ public class ListViewAdapter extends ArrayAdapter<Bucket> {
             this.checkBox.setOnClickListener(onClickListener_c);
 
             this.textView = textView;
-            textView.setOnTouchListener(new OnSwipeTouchListener(this.context){
+            textView.setOnTouchListener(new OnSwipeTouchListener(this.context) {
                 public void onSwipeLeft() {
                     removeItem(position);
                 }
@@ -135,9 +135,7 @@ public class ListViewAdapter extends ArrayAdapter<Bucket> {
             @Override
             public void onClick(View v) {
                 Bucket bucket = bucketList.get(position);
-                boolean isChecked = bucket.toggleChecked() == 1;
-                int bucketID = bucket.getId();
-                db.setFlag(bucketID, isChecked);
+                setChecked(bucket.getId(), !bucket.isChecked());
             }
         };
     }
