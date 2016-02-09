@@ -91,7 +91,7 @@ public class ListViewAdapter extends ArrayAdapter<Bucket> {
     public boolean setChecked(int id, boolean checked) {
         Bucket bucket = idToBucketMap.get(id);
         bucket.setChecked(checked);
-//        this.notifyDataSetChanged(); // this will trigger animation
+        this.notifyDataSetChanged(); // this will trigger animation
         return db.setFlag(bucket.getId(), checked);
     }
 
