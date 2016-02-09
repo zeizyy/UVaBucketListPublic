@@ -121,7 +121,7 @@ public class ListViewAdapter extends ArrayAdapter<Bucket> {
                 }
 
                 public void onClick() {
-                    Log.d("TextView onCLick", "Clicked");
+                    Log.d("TextView onClick", "Clicked");
                     Intent intent = new Intent(context, DetailActivity.class);
                     intent.putExtra("id", bucketList.get(position).getId());
                     context.startActivity(intent);

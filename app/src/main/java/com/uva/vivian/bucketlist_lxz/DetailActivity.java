@@ -31,7 +31,7 @@ public class DetailActivity extends AppCompatActivity {
         });
 
         TextView textView = (TextView) findViewById(R.id.textView_detail_description);
-        textView.setText(bucket.getDes());
+        textView.setText(bucket.getDescription());
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);

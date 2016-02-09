@@ -8,18 +8,18 @@ public class Bucket {
     private String title;
     private int checked;
     private int id;
-    private String des;
+    private String description;
 
-    public Bucket(String title, String des) {
-        this.title = title;
-        this.des = des;
+    public Bucket(String title, String description) {
+        this.title = title.trim();
+        this.description = description.trim();
     }
 
-    public Bucket(int id, int checked, String title, String des) {
-        this.title = title;
+    public Bucket(int id, int checked, String title, String description) {
+        this.title = title.trim();
         this.checked = checked;
         this.id = id;
-        this.des = des;
+        this.description = description.trim();
     }
 
     public String getTitle() {
@@ -34,10 +34,6 @@ public class Bucket {
         return this.checked != 0;
     }
 
-    public int toggleChecked() {
-        this.checked = 1 - this.checked;
-        return this.checked;
-    }
 
     public int getId() {
         return id;
@@ -47,7 +43,7 @@ public class Bucket {
         this.checked = checked ? 1 : 0;
     }
 
-    public String getDes() {
-        return des;
+    public String getDescription() {
+        return description;
     }
 }

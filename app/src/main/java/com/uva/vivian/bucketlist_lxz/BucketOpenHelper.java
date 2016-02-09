@@ -80,7 +80,7 @@ public class BucketOpenHelper extends SQLiteOpenHelper {
         ContentValues contentValues = new ContentValues();
         contentValues.put(KEY_THING, bucket.getTitle());
         contentValues.put(KEY_FLAG, bucket.getChecked());
-        contentValues.put(KEY_DES, bucket.getDes());
+        contentValues.put(KEY_DES, bucket.getDescription());
         db.insert(BUCKET_TABLE_NAME, null, contentValues);
         return true;
     }
