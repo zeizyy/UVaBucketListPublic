@@ -24,13 +24,11 @@ import java.util.List;
  */
 public class ListViewAdapter extends ArrayAdapter<Bucket> {
     private static LayoutInflater inflater = null;
-    static BucketOpenHelper db;
-
+    private static BucketOpenHelper db;
     Context context;
     //    HashMap<Bucket, Integer> mIdMap = new HashMap<Bucket, Integer>();
-    SparseArray<Bucket> idToBucketMap = new SparseArray<>();
-
-    ArrayList<Bucket> bucketList = new ArrayList<>();
+    private SparseArray<Bucket> idToBucketMap = new SparseArray<>();
+    private ArrayList<Bucket> bucketList = new ArrayList<>();
     private int lastPosition = -1;
 
     /**
