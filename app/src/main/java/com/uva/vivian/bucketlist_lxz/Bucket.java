@@ -30,6 +30,10 @@ public class Bucket {
         return this.checked;
     }
 
+    public boolean isChecked() {
+        return this.checked != 0;
+    }
+
     public int toggleChecked() {
         this.checked = 1 - this.checked;
         return this.checked;
@@ -43,5 +47,7 @@ public class Bucket {
         this.checked = checked ? 1 : 0;
     }
 
-    public String getDes() { return des; }
+    public String getDes() {
+        return des;
+    }
 }

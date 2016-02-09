@@ -22,7 +22,7 @@ public class DetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_detail);
         CheckBox checkBox = (CheckBox) findViewById(R.id.checkBox_detail_title);
         checkBox.setText(bucket.getTitle());
-        checkBox.setChecked(bucket.getChecked() == 1);
+        checkBox.setChecked(bucket.isChecked());
         checkBox.setOnCheckedChangeListener(new CheckBox.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {

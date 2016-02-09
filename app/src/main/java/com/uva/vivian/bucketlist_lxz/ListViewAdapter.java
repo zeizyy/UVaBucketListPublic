@@ -81,7 +81,7 @@ public class ListViewAdapter extends ArrayAdapter<Bucket> {
         final ViewHolder holder = (ViewHolder) rowView.getTag();
         holder.position = position;
         holder.textView.setText(bucketList.get(position).getTitle());
-        holder.checkBox.setChecked(bucketList.get(position).getChecked() == 1);
+        holder.checkBox.setChecked(bucketList.get(position).isChecked());
 
         Animation animation = AnimationUtils.loadAnimation(getContext(), (position > lastPosition) ? R.anim.up_from_bottom : R.anim.down_from_top);
         holder.textView.startAnimation(animation);
