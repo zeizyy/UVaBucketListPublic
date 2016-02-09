@@ -12,3 +12,5 @@ An Android Bucket List App by Vivian Liu, Qian Xiong and Yuanyang Zheng.
 - Add animation to the ListView items.
 - Add feature to delete entries in the ListView.
 - Bind both click listener(to access info page) and swipe left(to delete entry) listener to ListView items through SimpleOnGestureListener.
+- Add feature to add entries to the ListView.
+- Handle the Back Stack correctly.
