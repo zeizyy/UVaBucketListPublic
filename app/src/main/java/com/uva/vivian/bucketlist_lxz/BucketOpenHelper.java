@@ -80,17 +80,12 @@ public class BucketOpenHelper extends SQLiteOpenHelper {
         ContentValues contentValues = new ContentValues();
         contentValues.put(KEY_THING, bucket.getTitle());
         contentValues.put(KEY_FLAG, bucket.getChecked());
+        contentValues.put(KEY_DES, bucket.getDes());
         db.insert(BUCKET_TABLE_NAME, null, contentValues);
         return true;
     }
 
     public boolean setFlag(int id, boolean isChecked) {
-//        SQLiteDatabase db_r = this.getReadableDatabase();
-//        Cursor res = db_r.rawQuery("select * from bucket where id = "+(id),null);
-//        res.moveToFirst();
-//        String thing = res.getString(res.getColumnIndex(KEY_THING));
-//        Log.i("Thing",thing);
-
         SQLiteDatabase db_w = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         int flag = (isChecked) ? 1 : 0;

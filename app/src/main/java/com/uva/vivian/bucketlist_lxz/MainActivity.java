@@ -1,6 +1,7 @@
 package com.uva.vivian.bucketlist_lxz;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -121,6 +122,12 @@ public class MainActivity extends AppCompatActivity {
         );
         AppIndex.AppIndexApi.end(client, viewAction);
         client.disconnect();
+    }
+
+    public boolean startCreateActivity(MenuItem item) {
+        Intent intent = new Intent(this, CreateActivity.class);
+        startActivity(intent);
+        return true;
     }
 
 }
