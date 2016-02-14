@@ -47,11 +47,23 @@ public class ListViewAdapter extends ArrayAdapter<Bucket> {
         inflater = (LayoutInflater) context.
                 getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.context = context;
+
+        // adjust position for checked & unchecked
+        ArrayList<Bucket> checkedList = new ArrayList<>();
+        ArrayList<Bucket> uncheckedList = new ArrayList<>();
+
         for (Bucket bucket : objects) {
 //            mIdMap.put(bucket, bucket.getId());
             idToBucketMap.put(bucket.getId(), bucket);
-            bucketList.add(bucket);
+            if (bucket.isChecked()) {
+                checkedList.add(bucket);
+            } else {
+                uncheckedList.add(bucket);
+            }
         }
+        bucketList.addAll(uncheckedList);
+        bucketList.addAll(checkedList);
+
         db = bucketOpenHelper;
     }
 //
@@ -92,6 +104,7 @@ public class ListViewAdapter extends ArrayAdapter<Bucket> {
 
     public boolean setChecked(int id, boolean checked) {
         Bucket bucket = idToBucketMap.get(id);
+        adaptPosition(id);
         bucket.setChecked(checked);
         this.notifyDataSetChanged(); // this will trigger animation
         return db.setFlag(bucket.getId(), checked);
@@ -193,7 +206,20 @@ public class ListViewAdapter extends ArrayAdapter<Bucket> {
                 setChecked(bucket.getId(), !bucket.isChecked());
             }
         };
+
+
     }
 
+    // adaptPosition when click on checkbox
+    private void adaptPosition(int id){
+        Bucket bucket = idToBucketMap.get(id);
+        if (bucket.isChecked()){    //checked to unchecked, move up
+            bucketList.remove(bucket);
+            bucketList.add(0,bucket);
+        } else {                   //unchecked to checked, move down
+            bucketList.remove(bucket);
+            bucketList.add(bucket);
+        }
+    }
 
 }
