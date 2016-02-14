@@ -1,6 +1,8 @@
 package com.uva.vivian.bucketlist_lxz;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.util.Log;
 import android.util.SparseArray;
@@ -110,9 +112,17 @@ public class ListViewAdapter extends ArrayAdapter<Bucket> {
     public boolean removeItem(int position) {
         Bucket bucket = bucketList.get(position);
         bucketList.remove(position);
-        idToBucketMap.removeAt(position);
+        idToBucketMap.removeAt(bucket.getId());
         this.notifyDataSetChanged();
         return db.removeBucket(bucket.getId());
+    }
+
+    public boolean removeItemById(int id) {
+        Bucket bucket = idToBucketMap.get(id);
+        bucketList.remove(bucket);
+        idToBucketMap.removeAt(id);
+        this.notifyDataSetChanged();
+        return db.removeBucket(id);
     }
 
     private class ViewHolder {
@@ -121,7 +131,7 @@ public class ListViewAdapter extends ArrayAdapter<Bucket> {
         CheckBox checkBox;
         Context context;
 
-        public ViewHolder(final Context context, TextView textView, CheckBox checkBox) {
+        public ViewHolder(final Context context, final TextView textView, CheckBox checkBox) {
             this.context = context;
 
             this.checkBox = checkBox;
@@ -130,7 +140,32 @@ public class ListViewAdapter extends ArrayAdapter<Bucket> {
             this.textView = textView;
             textView.setOnTouchListener(new OnSwipeTouchListener(this.context) {
                 public void onSwipeLeft() {
-                    removeItem(position);
+                    AlertDialog alertDialog = new AlertDialog.Builder(
+                            context).create();
+
+                    // Setting Dialog Title
+                    alertDialog.setTitle("Delete from list?");
+
+                    // Setting Dialog Message
+                    alertDialog.setMessage("Your are trying to delete \"" + textView.getText().toString() + "\", click on OK to continue, or click anywhere to cancel.");
+
+                    // Setting Icon to Dialog
+                    alertDialog.setIcon(R.drawable.delete);
+
+                    // Setting OK Button
+                    alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            // Write your code here to execute after dialog closed
+//                        Toast.makeText(getApplicationContext(), "You clicked on OK", Toast.LENGTH_SHORT).show();
+//                        MainActivity.db.removeBucket(bucket.getId());
+                            removeItem(position);
+//                        Intent intent = new Intent(DetailActivity.this, MainActivity.class);
+//                        startActivity(intent);
+                        }
+                    });
+
+                    // Showing Alert Message
+                    alertDialog.show();
                 }
 
                 public void onClick() {
