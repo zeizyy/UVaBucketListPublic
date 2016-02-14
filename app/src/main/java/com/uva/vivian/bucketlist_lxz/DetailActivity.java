@@ -11,42 +11,126 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Button;
-import android.widget.Toast;
 
 public class DetailActivity extends AppCompatActivity {
+
+    Bucket bucket;
+
+    // edit view
+    CheckBox checkBox_edit;
+    EditText title_edit;
+    EditText description_edit;
+    Button button_save;
+    Button button_cancel;
+
+    // display view
+    CheckBox checkBox_display;
+    TextView description_display;
+    Button button_edit;
+    Button button_delete;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // comment
         super.onCreate(savedInstanceState);
-        int id = getIntent().getExtras().getInt("id");
-        final Bucket bucket = MainActivity.db.getBucket(id);
+        final int id = getIntent().getExtras().getInt("id");
+        bucket = MainActivity.db.getBucket(id);
 
         setContentView(R.layout.activity_detail);
-        CheckBox checkBox = (CheckBox) findViewById(R.id.checkBox_detail_title);
-        checkBox.setText(bucket.getTitle());
-        checkBox.setChecked(bucket.isChecked());
-        checkBox.setOnCheckedChangeListener(new CheckBox.OnCheckedChangeListener() {
+
+        // display part
+        checkBox_display = (CheckBox) findViewById(R.id.detail_checkbox_display);
+        checkBox_display.setChecked(bucket.isChecked());
+        checkBox_display.setText(bucket.getTitle());
+        checkBox_display.setOnCheckedChangeListener(new CheckBox.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 MainActivity.adapter.setChecked(bucket.getId(), isChecked);
             }
         });
 
-        TextView textView = (TextView) findViewById(R.id.textView_detail_description);
-        textView.setText(bucket.getDescription());
+        description_display = (TextView) findViewById(R.id.textView_detail_description);
+        description_display.setText(bucket.getDescription());
 
-        Button edit_button = (Button) findViewById(R.id.button);
-        edit_button.setOnClickListener(new View.OnClickListener() {
+        // edit part
+        checkBox_edit = (CheckBox) findViewById(R.id.detail_checkbox);
+        checkBox_edit.setVisibility(View.INVISIBLE);
+        title_edit = (EditText)findViewById(R.id.detail_title);
+        title_edit.setVisibility(View.INVISIBLE);
+        description_edit = (EditText) findViewById(R.id.textView_detail_description_edit);
+        description_edit.setVisibility(View.INVISIBLE);
+        button_save = (Button)findViewById(R.id.button3);
+        button_save.setVisibility(View.INVISIBLE);
+        button_cancel = (Button)findViewById(R.id.button4);
+        button_cancel.setVisibility(View.INVISIBLE);
+
+
+
+        // buttons
+        button_edit = (Button) findViewById(R.id.button);
+        button_edit.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                // Perform action on click
+                // display part be invisible
+                checkBox_display.setVisibility(View.INVISIBLE);
+                description_display.setVisibility(View.INVISIBLE);
+                button_delete.setVisibility(View.INVISIBLE);
+                button_edit.setVisibility(View.INVISIBLE);
+
+                // edit part be visible
+                checkBox_edit.setVisibility(View.VISIBLE);
+                checkBox_edit.setChecked(bucket.isChecked());
+                checkBox_edit.setOnCheckedChangeListener(new CheckBox.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                        MainActivity.adapter.setChecked(bucket.getId(), isChecked);
+                    }
+                });
+
+                title_edit.setVisibility(View.VISIBLE);
+                title_edit.setText(bucket.getTitle());
+
+
+                description_edit.setVisibility(View.VISIBLE);
+                description_edit.setText(bucket.getDescription());
+
+                button_save.setVisibility(View.VISIBLE);
+                button_save.setOnClickListener(new View.OnClickListener(){
+                    public void onClick(View v){
+                        bucket.setTitle(title_edit.getText().toString());
+                        bucket.setDescription(description_edit.getText().toString());
+                        MainActivity.adapter.updateItem(bucket);
+                        finish();
+                        startActivity(getIntent());
+                    }
+                    });
+
+                button_cancel.setVisibility(View.VISIBLE);
+                button_cancel.setOnClickListener(new View.OnClickListener(){
+                    public void onClick(View v) {
+//                        finish();
+//                        startActivity(getIntent());
+                        // display to visible
+                        checkBox_display.setVisibility(View.VISIBLE);
+                        description_display.setVisibility(View.VISIBLE);
+                        button_edit.setVisibility(View.VISIBLE);
+                        button_delete.setVisibility(View.VISIBLE);
+
+                        // edit to invisible
+                        checkBox_edit.setVisibility(View.INVISIBLE);
+                        title_edit.setVisibility(View.INVISIBLE);
+                        description_edit.setVisibility(View.INVISIBLE);
+                        button_save.setVisibility(View.INVISIBLE);
+                        button_cancel.setVisibility(View.INVISIBLE);
+                    }
+                });
             }
         });
 
-        Button delete_button = (Button) findViewById(R.id.button2);
-        delete_button.setOnClickListener(new View.OnClickListener() {
+        button_delete = (Button) findViewById(R.id.button2);
+        button_delete.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 AlertDialog alertDialog = new AlertDialog.Builder(
                         DetailActivity.this).create();

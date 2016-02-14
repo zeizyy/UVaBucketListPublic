@@ -2,6 +2,7 @@ package com.uva.vivian.bucketlist_lxz;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -98,6 +99,17 @@ public class BucketOpenHelper extends SQLiteOpenHelper {
         int num = db_w.update(BUCKET_TABLE_NAME, contentValues, "id = ? ", new String[]{Integer.toString(id)});
         Log.i("DB setFlag()", "Flag of " + id + " set to " + flag);
         return num > 0;
+    }
+
+    public void updateBucket(Bucket bucket) {
+        SQLiteDatabase db_w = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        String title = bucket.getTitle();
+        String detail = bucket.getDescription();
+        contentValues.put(KEY_THING, title);
+        contentValues.put(KEY_DES, detail);
+        int num = db_w.update(BUCKET_TABLE_NAME, contentValues, "id = ?", new String[]{Integer.toString(bucket.getId())});
+        Log.d("update", num+"");
     }
 
     public boolean removeBucket(int id) {

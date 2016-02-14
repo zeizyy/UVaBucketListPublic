@@ -125,6 +125,15 @@ public class ListViewAdapter extends ArrayAdapter<Bucket> {
         return db.removeBucket(id);
     }
 
+    public void updateItem(Bucket bucket) {
+        int id = bucket.getId();
+        Bucket bucket_ori = idToBucketMap.get(id);
+        bucket_ori.setTitle(bucket.getTitle());
+        bucket_ori.setDescription(bucket.getDescription());
+        this.notifyDataSetChanged();
+        db.updateBucket(bucket);
+    }
+
     private class ViewHolder {
         int position;
         TextView textView;
