@@ -8,9 +8,11 @@ An Android Bucket List App by Vivian Liu, Qian Xiong and Yuanyang Zheng.
 - Everything works fine.
 
 ## Extra Features
-- Achieve data persistence through SQLite Database. The database is initiated by reading a csv file in the resource.
-- Add animation to the ListView items.
-- Add feature to delete entries in the ListView.
-- Bind both click listener(to access info page) and swipe left(to delete entry) listener to ListView items through SimpleOnGestureListener.
-- Add feature to add entries to the ListView.
+- Achieve data persistence through SQLite Database. The database is initiated by reading a csv file in the resource. All data in the APP is dynamically read from the database.
+- Add animation to the ListView items when scrolling.
+- Add features to add/edit/delete items in the ListView.
+- Add confirmation upon deleting an item.
+- Bind both click listener (to access info page) and swipe left listener (to delete entry) to ListView items through SimpleOnGestureListener.
+- Checked items are sorted to the bottom of the ListView.
 - Handle the Back Stack correctly.
+
